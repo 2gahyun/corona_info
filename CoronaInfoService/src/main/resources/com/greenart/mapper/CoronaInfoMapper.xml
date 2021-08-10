@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenart.mapper.CoronaInfoMapper">
+    <insert id="insertCoronaInfo">
+        INSERT INTO corona_info.corona_info
+        (accExamCnt, accExamCompCnt, careCnt, clearCnt, deathCnt, decideCnt, examCnt, resultNegCnt, stateTime)
+        VALUES
+        (#{accExamCnt}, #{accExamCompCnt}, #{careCnt}, #{clearCnt}, #{deathCnt}, #{decideCnt}, #{examCnt}, #{resultNegCnt}, #{stateTime});
+    </insert>
+    <select id="selectCoronaInfoByDate" resultType="com.greenart.vo.CoronaInfoVO">
+        select * from corona_info where stateTime >= str_to_date(#{date}, "%Y-%m-%d")
+    </select>
+</mapper>

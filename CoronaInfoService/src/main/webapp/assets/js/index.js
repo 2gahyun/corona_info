@@ -1,4 +1,29 @@
 $(function(){
+
+    $.ajax({
+        type:"get",
+        url:"/api/coronaInfo/today",
+        success:function(r){
+            console.log(r);
+            $("#accExamCnt").html(r.data.strAccExamCnt);
+            $("#decideCnt").html(r.data.strDecideCnt);
+            let ctx2 = $("#confirmed_chart");
+            let confirmed_chart = new Chart(ctx2, {
+                type:"pie",
+                options:{
+                    responsive:false
+                },
+                data:{
+                    labels:["확진", "음성"],
+                    datasets:[{
+                        label:"확진/음성",
+                        data:[r.data.decideCnt, r.data.examCnt-r.data.decideCnt],
+                        backgroundColor:['rgb(255, 0, 76)', 'rgb(255, 251, 0)']
+                    }]
+                }
+            })
+        }
+    })
     let ctx = $("#regional_status");
     let regionalChart = new Chart(ctx, {
         type:'bar',
@@ -16,21 +41,21 @@ $(function(){
         }
     });
 
-    let ctx2 = $("#confirmed_chart");
-    let confirmed_chart = new Chart(ctx2, {
-        type:"pie",
-        options:{
-            responsive:false
-        },
-        data:{
-            labels:["확진", "음성"],
-            datasets:[{
-                label:"확진/음성",
-                data:[100, 200],
-                backgroundColor:['rgb(255, 0, 76)', 'rgb(255, 251, 0)']
-            }]
-        }
-    });
+    // let ctx2 = $("#confirmed_chart");
+    // let confirmed_chart = new Chart(ctx2, {
+    //     type:"pie",
+    //     options:{
+    //         responsive:false
+    //     },
+    //     data:{
+    //         labels:["확진", "음성"],
+    //         datasets:[{
+    //             label:"확진/음성",
+    //             data:[100, 200],
+    //             backgroundColor:['rgb(255, 0, 76)', 'rgb(255, 251, 0)']
+    //         }]
+    //     }
+    // });
 
     let ctx3 = $("#vaccine_chart");
     let vaccine_chart = new Chart(ctx3, {

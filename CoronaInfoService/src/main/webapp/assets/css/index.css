@@ -7,7 +7,7 @@
     padding: 20px 0; background-color: #fff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px; margin-bottom: 25px;
 }
-.dashboard_area {width: 700px; background-color: #f0e7ff; height: 900px; margin-left: 30px;}
+.dashboard_area {width: 800px; height: 900px; margin-left: 30px;}
 .main_menu a {
     font-size: 16px; font-family: "Roboto", sans-serif; text-decoration: none; background-color: #fff;
     color: #333; font-weight: 500; padding: 15px; position: relative; margin-bottom: 10px;
@@ -17,14 +17,12 @@
 .main_menu a::before {content: ""; display: inline-block; position: absolute; left: 0; top: 0;
     width: 5px; height: 100%; background-color: #fff;
 }
-.main_menu a:hover::before{
-    background-color: #333;
-}
+.main_menu a:hover::before{background-color: #333;}
 
 .dashboard_content {box-sizing: border-box; padding: 10px; font-size: 0;}
 .dashboard_content > div {display: inline-block; vertical-align: top;}
 .content_left {width: 250px; height: 200px;}
-.content_right {width: 415px; height: 200px; margin-left: 15px;}
+.content_right {width: 510px; height: 200px; margin-left: 20px;}
 
 .content_left .con_title { font-size: 24px; font-family: "Noto Sans KR", sans-serif;}
 .content_left .con_number {font-size: 32px; font-family: "ROboto", sans-serif; font-weight: 700;}
@@ -34,4 +32,18 @@
 .content_left p:nth-child(2) {margin-bottom: 20px;}
 .content_left p:nth-child(odd) {margin-bottom: 10px;}
 
-#regional_status {width: 100%; height: 100%;}
+.live_confirm_item {font-size: 14px; font-family: "Noto Sans KR", sans-serif;
+    padding: 10px 0; border-top: 1px solid #ddd;
+}
+.live_confirm_item .time {color: #666; margin-right: 10px;}
+.live_confirm_item .region {font-weight: 700;}
+.live_confirm_area {overflow-y: scroll;}
+.region_confirm_tbl {font-size: 12px; width: 100%; font-family: "Noto Sans KR", sans-serif;}
+.region_confirm_tbl td {width: 33.33%; text-align: center; padding: 10px 0;
+    border: 1px solid #eee;
+}
+.region_confirm_tbl thead td {background-color: #999; color: #fff;}
+.region_confirm_tbl tbody td:last-child {color: rgb(255, 0, 0);}
+.region_pager_area { font-size: 12px; text-align: center; margin-top: 10px;}
+.region_pager_area .current {font-weight: 700;}
+.dashboard_content:first-child {padding-top: 0;}
