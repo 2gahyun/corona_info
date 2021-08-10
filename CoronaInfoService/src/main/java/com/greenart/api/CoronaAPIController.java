@@ -11,6 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import com.greenart.service.CoronaInfoService;
 import com.greenart.vo.CoronaInfoVO;
+import com.greenart.vo.SidoInfoVO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -89,6 +90,73 @@ public class CoronaAPIController {
         }
         resultMap.put("status", true);
         resultMap.put("data", data);
+
+        return resultMap;
+    }
+
+    @GetMapping("/api/sido")
+    public Map<String, Object> getSidoInfo() throws Exception{
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        StringBuilder urlBuilder = new StringBuilder("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson"); /*URL*/
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=3CID6KRU4kjF4jvHanoFBLwycg6Htt86aVfgEOgBmAecshZIcO5EC9UM9FhVGwAX2Zf%2B%2FrxgsJeUfled1zNS0w%3D%3D"); /*Service Key*/
+        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
+        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8")); /*한 페이지 결과 수*/
+        urlBuilder.append("&" + URLEncoder.encode("startCreateDt","UTF-8") + "=" + URLEncoder.encode("20200410", "UTF-8")); /*검색할 생성일 범위의 시작*/
+        urlBuilder.append("&" + URLEncoder.encode("endCreateDt","UTF-8") + "=" + URLEncoder.encode("20210810", "UTF-8")); /*검색할 생성일 범위의 종료*/
+
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.parse(urlBuilder.toString());
+
+        doc.getDocumentElement().normalize();
+        System.out.println(doc.getDocumentElement().getNodeName());
+
+        NodeList mList = doc.getElementsByTagName("item");
+        System.out.println("size : "+mList.getLength());
+        if(mList.getLength() <= 0){
+            resultMap.put("status", false);
+            resultMap.put("message", "데이터가 없습니다.");
+            return resultMap;
+        }
+        for(int i=0; i<mList.getLength(); i++){
+            // 순차조회
+            Node node =mList.item(i);
+            Element elem = (Element) node;
+
+            System.out.println(getTagValue("createDt", elem)); // 등록일
+            System.out.println(getTagValue("deathCnt", elem)); // 사망자 수
+            System.out.println(getTagValue("defCnt", elem)); // 확진자 수
+            System.out.println(getTagValue("gubun", elem)); // 시도명
+            // System.out.println(getTagValue("gubunCn", elem)); 
+            // System.out.println(getTagValue("gubunEn", elem));
+            System.out.println(getTagValue("incDec", elem)); // 증가 수
+            System.out.println(getTagValue("isolClearCnt", elem)); // 격리해제(누적)
+            System.out.println(getTagValue("isolIngCnt", elem)); // 격리중
+            System.out.println(getTagValue("localOccCnt", elem)); // 지역발생 수
+            System.out.println(getTagValue("overFlowCnt", elem)); // 해외유입 수
+            // System.out.println(getTagValue("qurRate", elem));
+            // System.out.println(getTagValue("seq", elem));
+            // System.out.println(getTagValue("stdDay", elem));
+            // System.out.println(getTagValue("updateDt", elem));
+            System.out.println("============================================");
+
+            Date dt = new Date();
+            SimpleDateFormat dtFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            dt = dtFormat.parse(getTagValue("createDt", elem));
+            SidoInfoVO vo = new SidoInfoVO();
+            vo.setCreateDt(dt);
+            vo.setDeathCnt(Integer.parseInt(getTagValue("deathCnt", elem)));
+            vo.setDefCnt(Integer.parseInt(getTagValue("defCnt", elem)));
+            vo.setGubun(getTagValue("gubun", elem));
+            vo.setIncDec(Integer.parseInt(getTagValue("incDec", elem)));
+            vo.setIsolClearCnt(Integer.parseInt(getTagValue("isolClearCnt", elem)));
+            vo.setIsolIngCnt(Integer.parseInt(getTagValue("isolIngCnt", elem)));
+            vo.setLocalOccCnt(Integer.parseInt(getTagValue("localOccCnt", elem)));
+            vo.setOverFlowCnt(Integer.parseInt(getTagValue("overFlowCnt", elem)));
+
+            // System.out.println(vo);
+            service.insertCoronaSidoInfo(vo);
+        }
 
         return resultMap;
     }

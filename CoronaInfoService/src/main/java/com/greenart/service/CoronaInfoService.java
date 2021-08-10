@@ -7,6 +7,7 @@ import java.util.Date;
 
 import com.greenart.mapper.CoronaInfoMapper;
 import com.greenart.vo.CoronaInfoVO;
+import com.greenart.vo.SidoInfoVO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,10 @@ public class CoronaInfoService {
     @Autowired CoronaInfoMapper mapper;
     public void insertCoronaInfo(CoronaInfoVO vo){
         mapper.insertCoronaInfo(vo);
+    }
+
+    public void insertCoronaSidoInfo(SidoInfoVO vo){
+        mapper.insertCoronaSidoInfo(vo);
     }
     public CoronaInfoVO selectTodayCoronaInfo(){
         // Calendar start = Calendar.getInstance();
