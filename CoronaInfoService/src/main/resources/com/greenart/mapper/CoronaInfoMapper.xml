@@ -20,6 +20,6 @@
 
     </insert>
     <select id="selectSidoInfoByDate" resultType="com.greenart.vo.SidoInfoVO">
-        select * from sido_ifno where 
+        select * from sido_info where createDt >= str_to_date(#{date}, "%Y-%m-%d") and gubun != '합계'
     </select>
 </mapper>

@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import com.greenart.mapper.CoronaInfoMapper;
 import com.greenart.vo.CoronaInfoVO;
@@ -22,6 +23,30 @@ public class CoronaInfoService {
     public void insertCoronaSidoInfo(SidoInfoVO vo){
         mapper.insertCoronaSidoInfo(vo);
     }
+
+    public List<SidoInfoVO> selectTodaySidoInfo(){
+        Calendar now = Calendar.getInstance();
+        Calendar standard = Calendar.getInstance();
+        standard.set(Calendar.HOUR_OF_DAY, 10);
+        standard.set(Calendar.MINUTE, 30);
+        standard.set(Calendar.SECOND, 10);
+
+        if(now.getTimeInMillis() < standard.getTimeInMillis()){
+            // 현재 접속시간이 기준시간 (10시 30분 10초) 보다 이전일 때
+            // 하루 이전 날짜로 변경
+            now.add(Calendar.DATE, -1);
+            
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dt = formatter.format(now.getTime());
+
+        return mapper.selectSidoInfoByDate(dt);
+    }
+
+    public List<SidoInfoVO> selectSidoInfo(String date) {
+        return mapper.selectSidoInfoByDate(date);
+    }
+
     public CoronaInfoVO selectTodayCoronaInfo(){
         // Calendar start = Calendar.getInstance();
         // Calendar end = Calendar.getInstance();

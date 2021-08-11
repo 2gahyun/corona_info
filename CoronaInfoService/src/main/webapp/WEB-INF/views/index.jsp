@@ -75,28 +75,12 @@
                             <td>신규확진자</td>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>서울</td>
-                            <td>68,646</td>
-                            <td>359 ▲</td>
-                        </tr>
-                        <tr>
-                            <td>서울</td>
-                            <td>68,646</td>
-                            <td>359 ▲</td>
-                        </tr>
-                        <tr>
-                            <td>서울</td>
-                            <td>68,646</td>
-                            <td>359 ▲</td>
-                        </tr>
-                    </tbody>
+                    
                 </table>
                 <div class="region_pager_area">
-                    <button>&lt;</button>
-                    <span class="current">1</span> / <span class="total">7</span>
-                    <button>&gt;</button>
+                    <button id="region_prev">&lt;</button>
+                    <span class="current">1</span> / <span class="total">6</span>
+                    <button id="region_next">&gt;</button>
                 </div>
             </div>
         </div>

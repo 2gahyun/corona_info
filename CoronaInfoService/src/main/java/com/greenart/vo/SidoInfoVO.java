@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class SidoInfoVO {
+    private Integer seq;
     private Date createDt;
     private Integer deathCnt;
     private Integer defCnt;

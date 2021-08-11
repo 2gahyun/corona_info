@@ -4,6 +4,7 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -95,24 +96,28 @@ public class CoronaAPIController {
     }
 
     @GetMapping("/api/sido")
-    public Map<String, Object> getSidoInfo() throws Exception{
+    public Map<String, Object> getSidoInfo(@RequestParam String startDt, @RequestParam String endDt) throws Exception{
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        // 1. 데이터를 가져올 URL을 만드는 과정
         StringBuilder urlBuilder = new StringBuilder("http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson"); /*URL*/
         urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=3CID6KRU4kjF4jvHanoFBLwycg6Htt86aVfgEOgBmAecshZIcO5EC9UM9FhVGwAX2Zf%2B%2FrxgsJeUfled1zNS0w%3D%3D"); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8")); /*한 페이지 결과 수*/
-        urlBuilder.append("&" + URLEncoder.encode("startCreateDt","UTF-8") + "=" + URLEncoder.encode("20200410", "UTF-8")); /*검색할 생성일 범위의 시작*/
-        urlBuilder.append("&" + URLEncoder.encode("endCreateDt","UTF-8") + "=" + URLEncoder.encode("20210810", "UTF-8")); /*검색할 생성일 범위의 종료*/
-
+        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("100000", "UTF-8")); /*한 페이지 결과 수*/
+        urlBuilder.append("&" + URLEncoder.encode("startCreateDt","UTF-8") + "=" + URLEncoder.encode(startDt, "UTF-8")); /*검색할 생성일 범위의 시작*/
+        urlBuilder.append("&" + URLEncoder.encode("endCreateDt","UTF-8") + "=" + URLEncoder.encode(endDt, "UTF-8")); /*검색할 생성일 범위의 종료*/
+        // 2. 데이터 요청 (Reqeust)
+        // java.xml.parser
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        // org.w3c.dom
         Document doc = docBuilder.parse(urlBuilder.toString());
-
+        // 3. XML 파싱 시작
+        // text -> Node 변환
         doc.getDocumentElement().normalize();
         System.out.println(doc.getDocumentElement().getNodeName());
 
         NodeList mList = doc.getElementsByTagName("item");
-        System.out.println("size : "+mList.getLength());
+        System.out.println("데이터 수 : "+mList.getLength());
         if(mList.getLength() <= 0){
             resultMap.put("status", false);
             resultMap.put("message", "데이터가 없습니다.");
@@ -122,29 +127,12 @@ public class CoronaAPIController {
             // 순차조회
             Node node =mList.item(i);
             Element elem = (Element) node;
-
-            System.out.println(getTagValue("createDt", elem)); // 등록일
-            System.out.println(getTagValue("deathCnt", elem)); // 사망자 수
-            System.out.println(getTagValue("defCnt", elem)); // 확진자 수
-            System.out.println(getTagValue("gubun", elem)); // 시도명
-            // System.out.println(getTagValue("gubunCn", elem)); 
-            // System.out.println(getTagValue("gubunEn", elem));
-            System.out.println(getTagValue("incDec", elem)); // 증가 수
-            System.out.println(getTagValue("isolClearCnt", elem)); // 격리해제(누적)
-            System.out.println(getTagValue("isolIngCnt", elem)); // 격리중
-            System.out.println(getTagValue("localOccCnt", elem)); // 지역발생 수
-            System.out.println(getTagValue("overFlowCnt", elem)); // 해외유입 수
-            // System.out.println(getTagValue("qurRate", elem));
-            // System.out.println(getTagValue("seq", elem));
-            // System.out.println(getTagValue("stdDay", elem));
-            // System.out.println(getTagValue("updateDt", elem));
-            System.out.println("============================================");
-
-            Date dt = new Date();
+            // 문자열로 표현된 날짜를 java.util.Date 클래스 타입으로 변환
+            Date cDt = new Date();
             SimpleDateFormat dtFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            dt = dtFormat.parse(getTagValue("createDt", elem));
+            cDt = dtFormat.parse(getTagValue("createDt", elem)); // 문자열로부터 날짜를 유추한다.
             SidoInfoVO vo = new SidoInfoVO();
-            vo.setCreateDt(dt);
+            vo.setCreateDt(cDt);
             vo.setDeathCnt(Integer.parseInt(getTagValue("deathCnt", elem)));
             vo.setDefCnt(Integer.parseInt(getTagValue("defCnt", elem)));
             vo.setGubun(getTagValue("gubun", elem));
@@ -157,7 +145,22 @@ public class CoronaAPIController {
             // System.out.println(vo);
             service.insertCoronaSidoInfo(vo);
         }
+        return resultMap;
+    }
 
+    @GetMapping("/api/sidoInfo/{date}")
+    public Map<String, Object> getSidoInfoDate(@PathVariable String date){
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+
+        if(date.equals("today")){
+            List<SidoInfoVO> list = service.selectTodaySidoInfo();
+            resultMap.put("status", true);
+            resultMap.put("data", list);
+        } else {
+            List<SidoInfoVO> list = service.selectSidoInfo(date);
+            resultMap.put("status", true);
+            resultMap.put("data", list);
+        }
         return resultMap;
     }
 
