@@ -17,9 +17,17 @@
             (createDt, deathCnt, defCnt, gubun, incDec, isolClearCnt, isolIngCnt, localOccCnt, overFlowCnt)
         VALUES
             (#{createDt}, #{deathCnt}, #{defCnt}, #{gubun}, #{incDec}, #{isolClearCnt}, #{isolIngCnt}, #{localOccCnt}, #{overFlowCnt});
-
     </insert>
     <select id="selectSidoInfoByDate" resultType="com.greenart.vo.SidoInfoVO">
         select * from sido_info where createDt >= str_to_date(#{date}, "%Y-%m-%d") and gubun != '합계'
+    </select>
+    
+    <insert id="insertCoronaAgeInfo">
+        INSERT INTO age_info
+        (confCase, createDt, death, gubun)
+        VALUES(#{confCase}, #{createDt}, #{death}, #{gubun});
+    </insert>
+    <select id="selectCoronaAgeInfo" resultType="com.greenart.vo.CoronaAgeInfoVO">
+        select * from age_info where createDt >= str_to_date(#{date}, "%Y-%m-%d") and gubun != '여성' and gubun != '남성'
     </select>
 </mapper>

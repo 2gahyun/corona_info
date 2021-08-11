@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.greenart.mapper.CoronaInfoMapper;
+import com.greenart.vo.CoronaAgeInfoVO;
 import com.greenart.vo.CoronaInfoVO;
 import com.greenart.vo.SidoInfoVO;
 
@@ -45,6 +46,20 @@ public class CoronaInfoService {
 
     public List<SidoInfoVO> selectSidoInfo(String date) {
         return mapper.selectSidoInfoByDate(date);
+    }
+
+    public void insertCoronaAgeInfo(CoronaAgeInfoVO vo){
+        mapper.insertCoronaAgeInfo(vo);
+    }
+
+    public CoronaAgeInfoVO selectTodayCoronaAgeInfo(){
+        Date now = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String date = formatter.format(now);
+
+        CoronaAgeInfoVO data = mapper.selectCoronaAgeInfo(date);
+
+        return data;
     }
 
     public CoronaInfoVO selectTodayCoronaInfo(){

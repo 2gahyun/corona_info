@@ -2,6 +2,7 @@ package com.greenart.mapper;
 
 import java.util.List;
 
+import com.greenart.vo.CoronaAgeInfoVO;
 import com.greenart.vo.CoronaInfoVO;
 import com.greenart.vo.SidoInfoVO;
 
@@ -14,4 +15,7 @@ public interface CoronaInfoMapper {
 
     public void insertCoronaSidoInfo(SidoInfoVO vo);
     public List<SidoInfoVO> selectSidoInfoByDate(String date);
+
+    public void insertCoronaAgeInfo(CoronaAgeInfoVO vo);
+    public CoronaAgeInfoVO selectCoronaAgeInfo(String date);
 }
