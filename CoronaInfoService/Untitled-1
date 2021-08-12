@@ -1,0 +1,170 @@
+{
+    "currentCount": 18,
+    "data": [{
+        "accumulatedFirstCnt": 21373726,
+        "accumulatedSecondCnt": 7894715,
+        "baseDate": "2021-08-11 00:00:00",
+        "firstCnt": 261380,
+        "secondCnt": 168265,
+        "sido": "전국",
+        "totalFirstCnt": 21635106,
+        "totalSecondCnt": 8062980
+    }, {
+        "accumulatedFirstCnt": 3961875,
+        "accumulatedSecondCnt": 1481527,
+        "baseDate": "2021-08-11 00:00:00",
+        "firstCnt": 48625,
+        "secondCnt": 34387,
+        "sido": "서울특별시",
+        "totalFirstCnt": 4010500,
+        "totalSecondCnt": 1515914
+    }, {
+        "accumulatedFirstCnt": 1478311,
+        "accumulatedSecondCnt": 518168,
+        "baseDate": "2021-08-11 00:00:00",
+        "firstCnt": 16948,
+        "secondCnt": 9731,
+        "sido": "부산광역시",
+        "totalFirstCnt": 1495259,
+        "totalSecondCnt": 527899
+    }, {
+        "accumulatedFirstCnt": 1143132,
+        "accumulatedSecondCnt": 396639,
+        "baseDate": "2021-08-11 00:00:00",
+        "firstCnt": 13567,
+        "secondCnt": 8417,
+        "sido": "인천광역시",
+        "totalFirstCnt": 1156699,
+        "totalSecondCnt": 405056
+    }, {
+        "accumulatedFirstCnt": 942122,
+        "accumulatedSecondCnt": 342224,
+        "baseDate": "2021-08-11 00:00:00",
+        "firstCnt": 12498,
+        "secondCnt": 6729,
+        "sido": "대구광역시",
+        "totalFirstCnt": 954620,
+        "totalSecondCnt": 348953
+    }, {
+        "accumulatedFirstCnt": 604442,
+        "accumulatedSecondCnt": 223246,
+        "baseDate": "2021-08-11 00:00:00",
+        "firstCnt": 6045,
+        "secondCnt": 5394,
+        "sido": "광주광역시",
+        "totalFirstCnt": 610487,
+        "totalSecondCnt": 228640
+    }, {
+        "accumulatedFirstCnt": 574007,
+        "accumulatedSecondCnt": 216787,
+        "baseDate": "2021-08-11 00:00:00",
+        "firstCnt": 5809,
+        "secondCnt": 4936,
+        "sido": "대전광역시",
+        "totalFirstCnt": 579816,
+        "totalSecondCnt": 221723
+    }, {
+        "accumulatedFirstCnt": 439924,
+        "accumulatedSecondCnt": 139352,
+        "baseDate": "2021-08-11 00:00:00",
+        "firstCnt": 6414,
+        "secondCnt": 3879,
+        "sido": "울산광역시",
+        "totalFirstCnt": 446338,
+        "totalSecondCnt": 143231
+    }, {
+        "accumulatedFirstCnt": 120855,
+        "accumulatedSecondCnt": 43681,
+        "baseDate": "2021-08-11 00:00:00",
+        "firstCnt": 1413,
+        "secondCnt": 1221,
+        "sido": "세종특별자치시",
+        "totalFirstCnt": 122268,
+        "totalSecondCnt": 44902
+    }, {
+        "accumulatedFirstCnt": 5121558,
+        "accumulatedSecondCnt": 1853160,
+        "baseDate": "2021-08-11 00:00:00",
+        "firstCnt": 69792,
+        "secondCnt": 48020,
+        "sido": "경기도",
+        "totalFirstCnt": 5191350,
+        "totalSecondCnt": 1901180
+    }, {
+        "accumulatedFirstCnt": 725300,
+        "accumulatedSecondCnt": 295011,
+        "baseDate": "2021-08-11 00:00:00",
+        "firstCnt": 7560,
+        "secondCnt": 5056,
+        "sido": "강원도",
+        "totalFirstCnt": 732860,
+        "totalSecondCnt": 300067
+    }, {
+        "accumulatedFirstCnt": 702484,
+        "accumulatedSecondCnt": 261090,
+        "baseDate": "2021-08-11 00:00:00",
+        "firstCnt": 8087,
+        "secondCnt": 5388,
+        "sido": "충청북도",
+        "totalFirstCnt": 710571,
+        "totalSecondCnt": 266478
+    }, {
+        "accumulatedFirstCnt": 936719,
+        "accumulatedSecondCnt": 360199,
+        "baseDate": "2021-08-11 00:00:00",
+        "firstCnt": 11272,
+        "secondCnt": 6930,
+        "sido": "충청남도",
+        "totalFirstCnt": 947991,
+        "totalSecondCnt": 367129
+    }, {
+        "accumulatedFirstCnt": 854224,
+        "accumulatedSecondCnt": 336376,
+        "baseDate": "2021-08-11 00:00:00",
+        "firstCnt": 7686,
+        "secondCnt": 4420,
+        "sido": "전라북도",
+        "totalFirstCnt": 861910,
+        "totalSecondCnt": 340796
+    }, {
+        "accumulatedFirstCnt": 931161,
+        "accumulatedSecondCnt": 371060,
+        "baseDate": "2021-08-11 00:00:00",
+        "firstCnt": 8465,
+        "secondCnt": 6377,
+        "sido": "전라남도",
+        "totalFirstCnt": 939626,
+        "totalSecondCnt": 377437
+    }, {
+        "accumulatedFirstCnt": 1183184,
+        "accumulatedSecondCnt": 447194,
+        "baseDate": "2021-08-11 00:00:00",
+        "firstCnt": 15287,
+        "secondCnt": 6203,
+        "sido": "경상북도",
+        "totalFirstCnt": 1198471,
+        "totalSecondCnt": 453397
+    }, {
+        "accumulatedFirstCnt": 1376513,
+        "accumulatedSecondCnt": 506657,
+        "baseDate": "2021-08-11 00:00:00",
+        "firstCnt": 18739,
+        "secondCnt": 8682,
+        "sido": "경상남도",
+        "totalFirstCnt": 1395252,
+        "totalSecondCnt": 515339
+    }, {
+        "accumulatedFirstCnt": 277915,
+        "accumulatedSecondCnt": 102344,
+        "baseDate": "2021-08-11 00:00:00",
+        "firstCnt": 3173,
+        "secondCnt": 2495,
+        "sido": "제주특별자치도",
+        "totalFirstCnt": 281088,
+        "totalSecondCnt": 104839
+    }],
+    "matchCount": 18,
+    "page": 1,
+    "perPage": 100000,
+    "totalCount": 2796
+}

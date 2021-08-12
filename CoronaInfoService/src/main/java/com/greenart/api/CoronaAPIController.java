@@ -1,5 +1,9 @@
 package com.greenart.api;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,8 +18,12 @@ import com.greenart.service.CoronaInfoService;
 import com.greenart.vo.CoronaAgeInfoVO;
 import com.greenart.vo.CoronaInfoVO;
 import com.greenart.vo.SidoInfoVO;
+import com.greenart.vo.VaccineInfoVO;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -198,26 +206,19 @@ public class CoronaAPIController {
             Node node =nList.item(i);
             Element elem = (Element) node;
 
-            System.out.println(getTagValue("confCase", elem));
-            // System.out.println(getTagValue("confCaseRate", elem));
-            System.out.println(getTagValue("createDt", elem));
-            // System.out.println(getTagValue("criticalRate", elem));
-            System.out.println(getTagValue("death", elem));
-            // System.out.println(getTagValue("deathRate", elem));
-            System.out.println(getTagValue("gubun", elem));
-            // System.out.println(getTagValue("seq", elem));
-            // System.out.println(getTagValue("updateDt", elem));
-            System.out.println("=====================================");
-
             Date aDt = new Date();
             SimpleDateFormat dtFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             aDt = dtFormat.parse(getTagValue("createDt", elem)); // 문자열로부터 날짜를 유추한다.
             CoronaAgeInfoVO vo = new CoronaAgeInfoVO();
             vo.setCreateDt(aDt);
             vo.setConfCase(Integer.parseInt(getTagValue("confCase", elem)));
+            vo.setConfCaseRate(Double.parseDouble(getTagValue("confCaseRate", elem)));
+            vo.setCriticalRate(Double.parseDouble(getTagValue("criticalRate", elem)));
+            vo.setDeathRate(Double.parseDouble(getTagValue("deathRate", elem)));
             vo.setDeath(Integer.parseInt(getTagValue("death", elem)));
             String gubun = getTagValue("gubun", elem);
-            if(gubun.equals("남성") || gubun.equals("여성")) continue;
+            // if(gubun.equals("남성") || gubun.equals("여성")) continue;
+            if(gubun.equals("0-9")) gubun = "0";
             else if(gubun.equals("10-19")) gubun = "10";
             else if(gubun.equals("20-29")) gubun = "20";
             else if(gubun.equals("30-39")) gubun = "30";
@@ -225,7 +226,7 @@ public class CoronaAPIController {
             else if(gubun.equals("50-59")) gubun = "50";
             else if(gubun.equals("60-69")) gubun = "60";
             else if(gubun.equals("70-79")) gubun = "70";
-            else gubun = "80";
+            else if(gubun.equals("80 이상")) gubun = "80";
             vo.setGubun(gubun);
 
             // System.out.println(vo);
@@ -234,15 +235,27 @@ public class CoronaAPIController {
         return resultMap;
     }
 
-    @GetMapping("/api/coronaAge/{date}")
-    public Map<String, Object> getCoronaAgeDate(@PathVariable String date){
+    @GetMapping("/api/corona/{type}/{date}")
+    public Map<String, Object> getCoronaAgeGen(@PathVariable String type, @PathVariable String date){
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        CoronaAgeInfoVO age = null;
-        if(date.equals("today")){
-            age = service.selectTodayCoronaAgeInfo();
+        
+        if(date.equals("today") && type.equals("age")){
+            return service.selectCoronaTodayAgeInfo();
+            // List<CoronaAgeInfoVO> list = service.selectCoronaTodayAgeInfo();
+            // resultMap.put("data", list);
         }
-        resultMap.put("status", true);
-        resultMap.put("data", age);
+        else if(date.equals("today") && type.equals("gen")){
+            List<CoronaAgeInfoVO> list = service.selectCoronaTodayGenInfo();
+            resultMap.put("data", list);
+        }
+        else if(type.equals("age")){
+            List<CoronaAgeInfoVO> list = service.selectCoronaAgeInfo(date);
+            resultMap.put("data", list);
+        }
+        else if(type.equals("gen")){
+            List<CoronaAgeInfoVO> list = service.selectCoronaGenInfo(date);
+            resultMap.put("data", list);
+        }
 
         return resultMap;
     }
@@ -253,5 +266,89 @@ public class CoronaAPIController {
         Node node = (Node) nlList.item(0);
         if(node == null) return null;
         return node.getNodeValue();
+    }
+
+    @GetMapping("/api/corona/vaccine")
+    public Map<String, Object> getCoronaVaccine(@RequestParam @Nullable String targetDt) throws Exception{
+        Map<String, Object> resultMap = new LinkedHashMap<String ,Object>();
+
+        StringBuilder urlBuilder = new StringBuilder("https://api.odcloud.kr/api/15077756/v1/vaccine-stat"); /*URL*/
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=3CID6KRU4kjF4jvHanoFBLwycg6Htt86aVfgEOgBmAecshZIcO5EC9UM9FhVGwAX2Zf%2B%2FrxgsJeUfled1zNS0w%3D%3D"); /*Service Key*/
+        urlBuilder.append("&" + URLEncoder.encode("page","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
+        urlBuilder.append("&" + URLEncoder.encode("perPage","UTF-8") + "=" + URLEncoder.encode("100000", "UTF-8")); /*한 페이지 결과 수*/
+        if(targetDt != null){
+            targetDt += " 00:00:00";
+            urlBuilder.append("&" + URLEncoder.encode("cond[baseDate::EQ]","UTF-8") + "=" + URLEncoder.encode(targetDt, "UTF-8")); /*이 코드 빼면 전체 날짜 범위가 가져와짐*/
+        }
+        System.out.println(urlBuilder.toString());
+
+        URL url = new URL(urlBuilder.toString());
+        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Content-Type", "application/json");
+
+        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        StringBuilder sb = new StringBuilder();
+
+        String line;
+        while((line = rd.readLine()) != null){
+            sb.append(line);
+        }
+        rd.close();
+        conn.disconnect();
+
+        System.out.println(sb.toString());
+
+        JSONObject jsonObject = new JSONObject(sb.toString());
+        Integer cnt = jsonObject.getInt("currentCount");
+        System.out.println("Count : "+cnt);
+
+        JSONArray dataArray = jsonObject.getJSONArray("data");
+        for(int i=0; i<dataArray.length(); i++){
+            JSONObject obj = dataArray.getJSONObject(i);
+            Integer accumulatedFirstCnt = obj.getInt("accumulatedFirstCnt");
+            Integer accumulatedSecondCnt = obj.getInt("accumulatedSecondCnt");
+            String baseDate = obj.getString("baseDate");
+            Integer firstCnt = obj.getInt("firstCnt");
+            Integer secondCnt = obj.getInt("secondCnt");
+            String sido = obj.getString("sido");
+            
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date dt = formatter.parse(baseDate);
+
+            VaccineInfoVO vo = new VaccineInfoVO();
+            vo.setAccFirstCnt(accumulatedFirstCnt);
+            vo.setAccSecondCnt(accumulatedSecondCnt);
+            vo.setRegDt(dt);
+            vo.setFistCnt(firstCnt);
+            vo.setSecondCnt(secondCnt);
+            vo.setSido(sido);
+
+            service.insertCoronaVaccineInfo(vo);
+            // System.out.println(accumulatedFirstCnt);
+            // System.out.println(accumulatedSecondCnt);
+            // System.out.println(baseDate);
+            // System.out.println(firstCnt);
+            // System.out.println(secondCnt);
+            // System.out.println(sido);
+            // System.out.println(totalFirstCnt);
+            // System.out.println(totalSecondCnt);
+        }
+        return resultMap;
+    }
+
+    @GetMapping("/api/corona/vaccine/{date}")
+    public Map<String, Object> getCoronaVaccineInfo(@PathVariable String date){
+        Map<String, Object> resultMap = new LinkedHashMap<String ,Object>();
+
+        if(date.equals("today")){
+            List<VaccineInfoVO> list = service.selectTodayCoronaVaccineInfo();
+            resultMap.put("data", list);
+            return resultMap;
+        }
+
+        List<VaccineInfoVO> list = service.selectCoronaVaccineInfo(date);
+        resultMap.put("data", list);
+        return resultMap;
     }
 }

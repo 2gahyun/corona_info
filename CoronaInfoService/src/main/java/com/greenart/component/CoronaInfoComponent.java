@@ -1,5 +1,9 @@
 package com.greenart.component;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,7 +19,10 @@ import com.greenart.service.CoronaInfoService;
 import com.greenart.vo.CoronaAgeInfoVO;
 import com.greenart.vo.CoronaInfoVO;
 import com.greenart.vo.SidoInfoVO;
+import com.greenart.vo.VaccineInfoVO;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -142,8 +149,8 @@ public class CoronaInfoComponent {
     }
     }
 
-    // 매일 10:30:10 에 한 번 실행
-    @Scheduled(cron="10 30 10 * * *")
+    // 매일 14:50:00 에 한 번 실행
+    @Scheduled(cron="0 50 14 * * *")
     public void getCoronaAgeInfo() throws Exception{
         Date dt = new Date(); // 현재시간
         SimpleDateFormat dtFormatter = new SimpleDateFormat("YYYYMMdd");
@@ -176,26 +183,19 @@ public class CoronaInfoComponent {
             Node node =nList.item(i);
             Element elem = (Element) node;
 
-            System.out.println(getTagValue("confCase", elem));
-            // System.out.println(getTagValue("confCaseRate", elem));
-            System.out.println(getTagValue("createDt", elem));
-            // System.out.println(getTagValue("criticalRate", elem));
-            System.out.println(getTagValue("death", elem));
-            // System.out.println(getTagValue("deathRate", elem));
-            System.out.println(getTagValue("gubun", elem));
-            // System.out.println(getTagValue("seq", elem));
-            // System.out.println(getTagValue("updateDt", elem));
-            System.out.println("=====================================");
-
             Date aDt = new Date();
             SimpleDateFormat dtFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             aDt = dtFormat.parse(getTagValue("createDt", elem)); // 문자열로부터 날짜를 유추한다.
             CoronaAgeInfoVO vo = new CoronaAgeInfoVO();
             vo.setCreateDt(aDt);
             vo.setConfCase(Integer.parseInt(getTagValue("confCase", elem)));
+            vo.setConfCaseRate(Double.parseDouble(getTagValue("confCaseRate", elem)));
+            vo.setCriticalRate(Double.parseDouble(getTagValue("criticalRate", elem)));
+            vo.setDeathRate(Double.parseDouble(getTagValue("deathRate", elem)));
             vo.setDeath(Integer.parseInt(getTagValue("death", elem)));
             String gubun = getTagValue("gubun", elem);
-            if(gubun.equals("남성") || gubun.equals("여성")) continue;
+            // if(gubun.equals("남성") || gubun.equals("여성")) continue;
+            if(gubun.equals("0-9")) gubun = "0";
             else if(gubun.equals("10-19")) gubun = "10";
             else if(gubun.equals("20-29")) gubun = "20";
             else if(gubun.equals("30-39")) gubun = "30";
@@ -203,11 +203,70 @@ public class CoronaInfoComponent {
             else if(gubun.equals("50-59")) gubun = "50";
             else if(gubun.equals("60-69")) gubun = "60";
             else if(gubun.equals("70-79")) gubun = "70";
-            else gubun = "80";
+            else if(gubun.equals("80 이상")) gubun = "80";
             vo.setGubun(gubun);
 
             // System.out.println(vo);
             service.insertCoronaAgeInfo(vo);
+        }
+    }
+
+    @Scheduled(cron="0 0 10 * * *")
+    public void getCoronaVaccineInfo()throws Exception{
+        Date date = new Date(); // 현재시간
+        SimpleDateFormat dtFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        String today = dtFormatter.format(date)+" 00:00:00";
+
+        StringBuilder urlBuilder = new StringBuilder("https://api.odcloud.kr/api/15077756/v1/vaccine-stat"); /*URL*/
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=3CID6KRU4kjF4jvHanoFBLwycg6Htt86aVfgEOgBmAecshZIcO5EC9UM9FhVGwAX2Zf%2B%2FrxgsJeUfled1zNS0w%3D%3D"); /*Service Key*/
+        urlBuilder.append("&" + URLEncoder.encode("page","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
+        urlBuilder.append("&" + URLEncoder.encode("perPage","UTF-8") + "=" + URLEncoder.encode("100000", "UTF-8")); /*한 페이지 결과 수*/
+        urlBuilder.append("&" + URLEncoder.encode("cond[baseDate::EQ]","UTF-8") + "=" + URLEncoder.encode(today, "UTF-8")); /*이 코드 빼면 전체 날짜 범위가 가져와짐*/
+        System.out.println(urlBuilder.toString());
+
+        URL url = new URL(urlBuilder.toString());
+        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Content-Type", "application/json");
+
+        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        StringBuilder sb = new StringBuilder();
+
+        String line;
+        while((line = rd.readLine()) != null){
+            sb.append(line);
+        }
+        rd.close();
+        conn.disconnect();
+
+        System.out.println(sb.toString());
+
+        JSONObject jsonObject = new JSONObject(sb.toString());
+        Integer cnt = jsonObject.getInt("currentCount");
+        System.out.println("Count : "+cnt);
+
+        JSONArray dataArray = jsonObject.getJSONArray("data");
+        for(int i=0; i<dataArray.length(); i++){
+            JSONObject obj = dataArray.getJSONObject(i);
+            Integer accumulatedFirstCnt = obj.getInt("accumulatedFirstCnt");
+            Integer accumulatedSecondCnt = obj.getInt("accumulatedSecondCnt");
+            String baseDate = obj.getString("baseDate");
+            Integer firstCnt = obj.getInt("firstCnt");
+            Integer secondCnt = obj.getInt("secondCnt");
+            String sido = obj.getString("sido");
+            
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            date = formatter.parse(baseDate);
+
+            VaccineInfoVO vo = new VaccineInfoVO();
+            vo.setAccFirstCnt(accumulatedFirstCnt);
+            vo.setAccSecondCnt(accumulatedSecondCnt);
+            vo.setRegDt(date);
+            vo.setFistCnt(firstCnt);
+            vo.setSecondCnt(secondCnt);
+            vo.setSido(sido);
+
+            service.insertCoronaVaccineInfo(vo);
         }
     }
 }
