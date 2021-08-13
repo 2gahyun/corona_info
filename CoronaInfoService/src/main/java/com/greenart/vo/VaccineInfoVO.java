@@ -13,4 +13,6 @@ public class VaccineInfoVO {
     private Integer fistCnt;
     private Integer secondCnt;
     private String sido;
+    
+    private String region;
 }

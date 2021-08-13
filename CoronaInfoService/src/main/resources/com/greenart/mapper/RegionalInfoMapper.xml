@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenart.mapper.RegionalInfoMapper">
+    <select id="selectRegionalCoronaInfo" resultType="com.greenart.vo.SidoInfoVO">
+        select *,
+        (
+        	(
+        		select incDec from sido_info
+        		where 
+        			date_format(createDt, "%Y-%m-%d") = str_to_date(#{date}, "%Y-%m-%d")
+        			and gubun=#{region}
+        	) - (
+        		select incDec from sido_info
+        		where
+        			date_format(createDt, "%Y-%m-%d") = date_sub( str_to_date(#{date}, "%Y-%m-%d"), interval 1 day)
+        			and gubun=#{region}
+        	)
+        ) as diff
+        from sido_info where date_format(createDt, "%Y-%m-%d") = str_to_date(#{date}, "%Y-%m-%d")
+        and gubun=#{region}
+    </select>
+    <select id="selectCoronaInfoRegionTotal" resultType="com.greenart.vo.CoronaInfoVO">
+        select *, (
+        	(
+        		select decideCnt from corona_info
+        		where date_format(stateTime, "%Y-%m-%d") = str_to_date(#{date}, "%Y-%m-%d")
+        	) - (
+        		select decideCnt from corona_info
+        		where date_format(stateTime, "%Y-%m-%d") = date_sub(str_to_date(#{date}, "%Y-%m-%d"), interval 1 day)
+        	)
+        )as diff
+        from corona_info where date_format(stateTime, "%Y-%m-%d") = str_to_date(#{date}, "%Y-%m-%d")
+    </select>
+</mapper>

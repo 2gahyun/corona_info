@@ -16,4 +16,6 @@ public class SidoInfoVO {
     private Integer isolIngCnt;
     private Integer localOccCnt;
     private Integer overFlowCnt;
+
+    private Integer diff;
 }

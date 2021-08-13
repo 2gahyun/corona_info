@@ -1,0 +1,30 @@
+.right_area {width: 830px; box-sizing: border-box;
+    padding-left: 20px;}
+.right_area > div {width: 100%; background-color: #afb;
+    margin-bottom: 20px; position: relative;}
+
+.content_area, .content_head {font-family: "Noto Sans KR", sans-serif;}
+.content_area > div {display: inline-block; vertical-align: top; text-align: center;
+    padding: 30px; box-sizing: border-box; background-color: #fff;
+    margin-right: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);}
+.content_area > div:last-child {margin-right: 0;}
+.content_area {font-size: 0;}
+.right_area > div p {font-weight: 700; color: #333;}
+.right_area > div p:nth-child(1){font-size: 18px; margin-bottom: 20px;}
+.right_area > div p:nth-child(2){font-size: 28px; font-weight: 900;}
+.content_area:nth-child(2) > div {width: calc((100% - 60px) / 4);}
+.content_area:nth-child(3) > div {width: calc((100% - 60px) / 4);}
+.content_area:nth-child(3) > div:last-child {width: calc((100% - 60px) / 2 + 20px);}
+.content_area:nth-child(4) > div {width: calc((100% - 60px) / 4);}
+.content_area:nth-child(4) > div:first-child {width: calc((100% - 60px) / 2 + 20px)}
+
+.content_head select {padding: 10px 15px; font-family: "Noto Snas KR", sans-serif; font-size: 16px;
+    font-weight: 700; border: 1px solid #fff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    outline: none;}
+.content_head span {font-size: 20px; margin-left: 10px;}
+.content_head .distance_level {font-weight: 900; margin-left: 0;}
+
+.content_area h1 {font-size: 20px; font-weight: 700;}
+.content_area > canvas {height: 300px; width: 100%; background-color: #abf;}
+
+.content_area:last-child > div {width: calc((100% - 20px) / 2); height: 250px;}

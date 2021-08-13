@@ -59,8 +59,8 @@ public class CoronaInfoService {
         Map<String, Object> resultMap = new LinkedHashMap<String ,Object>();
         Calendar now = Calendar.getInstance();
         Calendar standard = Calendar.getInstance();
-        standard.set(Calendar.HOUR_OF_DAY, 15);
-        standard.set(Calendar.MINUTE, 00);
+        standard.set(Calendar.HOUR_OF_DAY, 16);
+        standard.set(Calendar.MINUTE, 10);
         standard.set(Calendar.SECOND, 00);
 
         if(now.getTimeInMillis() < standard.getTimeInMillis()){

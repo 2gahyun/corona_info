@@ -19,7 +19,7 @@ $(function(){
                     datasets:[{
                         label:r.dt+" 연령대별 확진",
                         data:confArr,
-                        backgroundColor:['rgb(72,61,139)']
+                        backgroundColor:['rgb(240,128,128)']
                     }]
                 }
             });
@@ -71,7 +71,7 @@ $(function(){
                     datasets:[{
                         label:"확진/음성",
                         data:[r.data.decideCnt, r.data.examCnt-r.data.decideCnt],
-                        backgroundColor:['rgb(220,20,60)', 'rgb(255,228,181)']
+                        backgroundColor:['rgb(220,20,60)', 'rgb(189,183,107)']
                     }]
                 }
             })
@@ -175,7 +175,7 @@ $(function(){
             for(let i=0; i<r.data.length; i++){
                 vacArr.push(r.data[i].fistCnt);
                 vacArr2.push(r.data[i].secondCnt);
-                vacLabel.push(r.data[i].sido);
+                vacLabel.push(r.data[i].region);
             } 
 
             let ctx3 = $("#vaccine_chart");
@@ -189,12 +189,12 @@ $(function(){
                     datasets:[{
                         label:" 1차 접종현황",
                         data:vacArr,
-                        backgroundColor:['rgb(140, 0, 255)']
+                        backgroundColor:['rgb(160,82,45)']
                     },
                     {
                         label:" 2차 접종현황",
                         data:vacArr2,
-                        backgroundColor:['rgba(30,30,255,0.7)']
+                        backgroundColor:['rgb(222,184,135)']
                     }]
                 }
             });

@@ -19,4 +19,6 @@ public class CoronaInfoVO {
 
     private String strAccExamCnt;
     private String strDecideCnt;
+
+    private Integer diff;
 }

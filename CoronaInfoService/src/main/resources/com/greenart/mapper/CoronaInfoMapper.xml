@@ -45,7 +45,27 @@
         VALUES(#{accFirstCnt}, #{accSecondCnt}, #{regDt}, #{fistCnt}, #{secondCnt}, #{sido});
     </insert>
     <select id="selectCoronaVaccineInfo" resultType="com.greenart.vo.VaccineInfoVO">
-        select * from vaccine_info
+        select * ,
+        case
+        	when sido = '서울특별시' then '서울'
+        	when sido = '부산광역시' then '부산'
+        	when sido = '대구광역시' then '대구'
+        	when sido = '인천광역시' then '인천'
+        	when sido = '광주광역시' then '광주'
+        	when sido = '대전광역시' then '대전'
+        	when sido = '울산광역시' then '울산'
+        	when sido = '세종특별자치시' then '세종'
+        	when sido = '경기도' then '경기'
+        	when sido = '강원도' then '강원'
+        	when sido = '충청북도' then '충북'
+        	when sido = '충청남도' then '충남'
+        	when sido = '전라북도' then '전북'
+        	when sido = '전라남도' then '전남'
+        	when sido = '경상북도' then '경북'
+        	when sido = '경상남도' then '경남'
+        	when sido = '제주특별자치도' then '제주'
+        end as region
+        from vaccine_info
         where date_format(regDt, '%Y-%m-%d') = str_to_date(#{date}, '%Y-%m-%d')
         and sido != '전국';
     </select>
