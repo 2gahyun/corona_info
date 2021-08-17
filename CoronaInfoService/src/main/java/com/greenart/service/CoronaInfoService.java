@@ -33,7 +33,7 @@ public class CoronaInfoService {
         Calendar standard = Calendar.getInstance();
         standard.set(Calendar.HOUR_OF_DAY, 10);
         standard.set(Calendar.MINUTE, 30);
-        standard.set(Calendar.SECOND, 10);
+        standard.set(Calendar.SECOND, 00);
 
         if(now.getTimeInMillis() < standard.getTimeInMillis()){
             // 현재 접속시간이 기준시간 (10시 30분 10초) 보다 이전일 때
@@ -110,10 +110,20 @@ public class CoronaInfoService {
         // 2021-08-11 14:00:00 - 접속시간(나중)
         // 현재시간이 세팅값보다 이전이라면, 전 날 데이터를 뽑아주고
         // 현재시간이 세팅값보다 나중이라면, 오늘 데이터를 뽑아준다.
+        Calendar now = Calendar.getInstance();
+        Calendar standard = Calendar.getInstance();
+        standard.set(Calendar.HOUR_OF_DAY, 10);
+        standard.set(Calendar.MINUTE, 30);
+        standard.set(Calendar.SECOND, 00);
 
-        Date now = new Date();
+        if(now.getTimeInMillis() < standard.getTimeInMillis()){
+            // 현재 접속시간이 기준시간 (10시 30분 10초) 보다 이전일 때
+            // 하루 이전 날짜로 변경
+            now.add(Calendar.DATE, -1);
+            
+        }
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String date = formatter.format(now);
+        String date = formatter.format(now.getTime());
 
         CoronaInfoVO data = mapper.selectCoronaInfoByDate(date);
 

@@ -10,26 +10,70 @@
         		where 
         			date_format(createDt, "%Y-%m-%d") = str_to_date(#{date}, "%Y-%m-%d")
         			and gubun=#{region}
+					limit 1
         	) - (
         		select incDec from sido_info
         		where
         			date_format(createDt, "%Y-%m-%d") = date_sub( str_to_date(#{date}, "%Y-%m-%d"), interval 1 day)
         			and gubun=#{region}
+					limit 1
         	)
         ) as diff
         from sido_info where date_format(createDt, "%Y-%m-%d") = str_to_date(#{date}, "%Y-%m-%d")
-        and gubun=#{region}
+        and gubun=#{region} limit 1
     </select>
     <select id="selectCoronaInfoRegionTotal" resultType="com.greenart.vo.CoronaInfoVO">
         select *, (
         	(
         		select decideCnt from corona_info
         		where date_format(stateTime, "%Y-%m-%d") = str_to_date(#{date}, "%Y-%m-%d")
+				limit 1
         	) - (
         		select decideCnt from corona_info
         		where date_format(stateTime, "%Y-%m-%d") = date_sub(str_to_date(#{date}, "%Y-%m-%d"), interval 1 day)
+				limit 1
         	)
         )as diff
         from corona_info where date_format(stateTime, "%Y-%m-%d") = str_to_date(#{date}, "%Y-%m-%d")
+		limit 1
     </select>
+
+	<select id="selectCoronVaccineInfo" resultType="com.greenart.vo.VaccineInfoVO">
+		select * from vaccine_info
+		where sido like #{region} and
+		date_format(regDt, "%Y-%m-%d") = str_to_date(#{date}, "%Y-%m-%d")
+		limit 1
+	</select>
+
+	<select id="selectDangerAge" resultType="java.lang.String">
+		select gubun from (
+			select (AVG(confCaseRate) + AVG(deathRate)) / 2 as danger, gubun from age_info
+			where gubun != '남성' and gubun != '여성'
+			<![CDATA[
+			and date_format(createDt, "%Y-%m-%d") <= str_to_date(#{date}, "%Y-%m-%d")
+			]]>
+			group by gubun order by danger desc limit 1
+		) a
+	</select>
+
+	<select id="selectRegionalCoronaTwoWeeks" resultType="com.greenart.vo.CoronaWeeksVO">
+		select date_format(createDt, "%Y-%m-%d") as date, defCnt from sido_info where gubun=#{region} and 
+		<![CDATA[
+		date_format(createDt, "%Y-%m-%d") <= str_to_date(#{date}, "%Y-%m-%d")
+		and
+		date_format(createDt, "%Y-%m-%d") > date_sub(str_to_date(#{date}, "%Y-%m-%d"), interval 14 day)
+		order by createDt asc
+		]]>
+	</select>
+
+	<select id="selectVaccineCoronaTwoWeeks" resultType="com.greenart.vo.VaccineWeeksVO">
+		select date_sub(date_format(regDt, "%Y-%m-%d"), interval 1 day) date, accFirstCnt, accSecondCnt 
+		from vaccine_info where sido like #{region} and
+		<![CDATA[
+		date_format(regDt, "%Y-%m-%d") <= str_to_date(#{date}, "%Y-%m-%d")
+		and
+		date_format(regDt, "%Y-%m-%d") > date_sub(str_to_date(#{date}, "%Y-%m-%d"), interval 14 day)
+		order by regDt asc
+		]]>
+	</select>
 </mapper>

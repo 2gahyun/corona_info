@@ -71,7 +71,7 @@ $(function(){
                     datasets:[{
                         label:"확진/음성",
                         data:[r.data.decideCnt, r.data.examCnt-r.data.decideCnt],
-                        backgroundColor:['rgb(220,20,60)', 'rgb(189,183,107)']
+                        backgroundColor:['rgb(220,20,60)', 'rgb(154,205,50)']
                     }]
                 }
             })

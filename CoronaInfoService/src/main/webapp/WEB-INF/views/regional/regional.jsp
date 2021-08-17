@@ -7,8 +7,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.structure.min.css" integrity="sha512-oM24YOsgj1yCDHwW895ZtK7zoDQgscnwkCLXcPUNsTRwoW1T1nDIuwkZq/O6oLYjpuz4DfEDr02Pguu68r4/3w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.theme.min.css" integrity="sha512-9h7XRlUeUwcHUf9bNiWSTO9ovOWFELxTlViP801e5BbwNJ5ir9ua6L20tEroWZdm+HFBAWBLx2qH4l4QHHlRyg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <link rel="stylesheet" href="/assets/css/regional.css">
     <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.0/dist/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script src="/assets/js/regional.js"></script>
 </head>
 <body>
@@ -17,7 +25,6 @@
         <div class="right_area">
             <div class="content_head">
                 <select id="region_select">
-                    <option value="all">전체</option>
                     <option value="서울">서울특별시</option>
                     <option value="경기">경기도</option>
                     <option value="대전">대전광역시</option>
@@ -41,6 +48,7 @@
                     <span>사회적 거리두기 단계 : </span>
                     <span class="distance_level">3단계</span>
                 </span>
+                <input type="text" id="date">
             </div>
             <div class="content_area">
                 <div>
@@ -88,27 +96,18 @@
                     <p>주의 연령대</p>
                     <p id="dangerAge"><span id="age">30</span>대</p>
                 </div>
-                <div>
+                <!-- <div>
                     <p>확진률</p>
                     <p id="confirmRate">2.2%</p>
-                </div>
+                </div> -->
             </div>
-            <div class="content_area">
+            <div class="content_area chart_content">
                 <h1>COVID-19 감염 추이</h1>
                 <canvas id="accDecideChart" style="width: 100%; height: 100%;"></canvas>
             </div>
-            <div class="content_area">
+            <div class="content_area chart_content">
                 <h1>COVID-19 백신 접종</h1>
                 <canvas id="accVaccineChart" style="width: 100%; height: 100%;"></canvas>
-            </div>
-            <div class="content_area">
-                <h1>연령대별 감염 현황</h1>
-                <div class="regional_age_chart_area">
-                    <canvas id="accAgeChart1" style="width: 100%; height: 100%;"></canvas>
-                </div>
-                <div class="regional_age_chart_area">
-                    <canvas id="accAgeChart2" style="width: 100%; height: 100%;"></canvas>
-                </div>
             </div>
         </div>
     </div>
