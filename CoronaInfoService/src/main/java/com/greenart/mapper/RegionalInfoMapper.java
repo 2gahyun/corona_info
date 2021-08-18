@@ -19,4 +19,5 @@ public interface RegionalInfoMapper {
     public List<CoronaWeeksVO> selectRegionalCoronaTwoWeeks(String region, String date);
     
     public List<VaccineWeeksVO> selectVaccineCoronaTwoWeeks(String region, String date);
+    public List<VaccineWeeksVO> selectVaccineInfo(String date);
 }

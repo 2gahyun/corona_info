@@ -76,4 +76,11 @@
 		order by regDt asc
 		]]>
 	</select>
+	<select id="selectVaccineInfo" resultType="com.greenart.vo.VaccineWeeksVO">
+		select 
+			date_sub(date_format(regDt, "%Y-%m-%d"), interval 1 day) 
+			date, accFirstCnt, accSecondCnt, firstCnt, secondCnt, sido
+		from vaccine_info 
+		where date_format(regDt, "%Y-%m-%d") = str_to_date(#{date}, "%Y-%m-%d")
+	</select>
 </mapper>

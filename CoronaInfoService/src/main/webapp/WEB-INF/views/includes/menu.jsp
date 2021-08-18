@@ -22,7 +22,7 @@
                 <a href="/regional">Regional <span>지역별통계</span></a>
             </li>
             <li>
-                <a href="#">Vaccine <span>백신접종현황</span></a>
+                <a href="/vaccine">Vaccine <span>백신접종현황</span></a>
             </li>
             <li>
                 <a href="#">Social Distance <span>사회적거리두기</span></a>

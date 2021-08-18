@@ -3,13 +3,11 @@ package com.greenart.api;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.greenart.service.RegionalInfoService;
-import com.greenart.vo.CoronaInfoVO;
 import com.greenart.vo.CoronaWeeksVO;
 import com.greenart.vo.SidoInfoVO;
 import com.greenart.vo.VaccineInfoVO;
@@ -18,6 +16,7 @@ import com.greenart.vo.VaccineWeeksVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -111,6 +110,16 @@ public class RegionalAPIController {
 
         List<VaccineWeeksVO> vaccineWeeksList = service.selectVaccineCoronaTwoWeeks(region, date);
         resultMap.put("vaccineWeeksList", vaccineWeeksList);
+        
+        return resultMap;
+    }
+
+    @GetMapping("/api/vaccine/{date}")
+    public Map<String, Object> getVaccineInfoByDate(@PathVariable String date){
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+
+        List<VaccineWeeksVO> list = service.selectVaccineInfo(date);
+        resultMap.put("vaccineList", list);
         
         return resultMap;
     }

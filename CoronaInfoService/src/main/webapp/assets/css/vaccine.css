@@ -1,0 +1,39 @@
+.right_area {width: 830px; box-sizing: border-box; padding-left: 20px;}
+.data_row {width: 100%; background-color: #fff; font-size: 0;
+    border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin-bottom: 20px;
+}
+.data_row h1 {font-family: "Noto Sans KR", sans-serif; font-weight: 700;
+    font-size: 24px; text-align: center; padding-top: 20px; margin-bottom: 20px;
+}
+.data_row > div {display: inline-block; width: 50%;
+    font-size: 20px; text-align: center; vertical-align: top;
+    font-family: "Noto Sans KR", sans-serif; font-weight: 700; margin-bottom: 20px;
+}
+.data_row #th {font-size: 9px;}
+.sido_box #th {font-size: 9px;}
+.data_row > div > p {margin-bottom: 15px;}
+.data_row #accFirstCntAll {font-size: 32px;}
+.data_row #incFirstCntAll {font-size: 16px; display: block; margin-top: 10px;
+    color: #f22;}
+.data_row #accSecondCntAll {font-size: 32px;}
+.data_row #incSecondCntAll {font-size: 16px; display: block; margin-top: 10px;
+    color: #f22;}
+.container > .right_area {font-size: 0;}
+.sido_box {background-color: #fff; margin-right: 20px;
+    width: calc((100% - 40px) / 3); display: inline-block; vertical-align: top;
+    margin-top: 10px; font-size: 16px; text-align: center; padding-bottom: 20px;
+    border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.sido_box:nth-child(3n) {margin-right: 0;}
+.sido_box p {font-family: "Noto Sans KR", sans-serif;}
+.sido_name {font-size: 22px; margin-top: 20px; font-weight: 700; margin-bottom: 20px;}
+.sidoFirst {margin-bottom: 10px;}
+.sidoFirst > span {font-weight: 700;}
+.sidoSecond > span {font-weight: 700;}
+.sidoIncCnt {font-size: 12px; color: #f22;}
+
+#date {
+    font-size: 24px; font-family: "Noto Sans KR", sans-serif; width: 130px; font-weight: 700;
+    border: 0; outline: none; cursor: pointer; text-decoration: underline;
+}
+#date:hover {color: #f00;}

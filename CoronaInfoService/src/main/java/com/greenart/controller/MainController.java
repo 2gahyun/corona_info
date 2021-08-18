@@ -1,7 +1,6 @@
 package com.greenart.controller;
 
 import com.greenart.service.CoronaInfoService;
-import com.greenart.vo.CoronaInfoVO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
