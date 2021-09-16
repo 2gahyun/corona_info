@@ -30,7 +30,6 @@ import org.w3c.dom.NodeList;
 @Component
 public class CoronaInfoComponent {
     @Autowired CoronaInfoService service;
-    // 매일 10시 30분에 한 번 호출
     @Scheduled(cron="0 30 10 * * *")
     public void getCoronaInfo() throws Exception{
         Date dt = new Date(); // 현재시간
@@ -89,7 +88,6 @@ public class CoronaInfoComponent {
         if(node == null) return null;
         return node.getNodeValue();
     }
-    // 매일 10:30:10 에 한 번 실행
     @Scheduled(cron="10 30 10 * * *")
     public void getSidoInfo() throws Exception{
         Date dt = new Date(); // 현재시간
@@ -143,7 +141,6 @@ public class CoronaInfoComponent {
     }
     }
 
-    // 매일 16:00:00 에 한 번 실행
     @Scheduled(cron="0 0 16 * * *")
     public void getCoronaAgeInfo() throws Exception{
         Date dt = new Date(); // 현재시간

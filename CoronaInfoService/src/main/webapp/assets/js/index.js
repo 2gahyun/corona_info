@@ -1,7 +1,7 @@
 $(function(){
     $.ajax({
         type:"get",
-        url:"/api/corona/age/today",
+        url:"/api/corona/age/2021-07-01",
         success:function(r){
             let confArr = new Array();
             let confLabel = new Array();
@@ -17,7 +17,7 @@ $(function(){
                 data:{
                     labels:confLabel,
                     datasets:[{
-                        label:r.dt+" 연령대별 확진",
+                        label:" 연령대별 확진",
                         data:confArr,
                         backgroundColor:['rgb(240,128,128)']
                     }]
@@ -27,7 +27,7 @@ $(function(){
     });
     $.ajax({
         type:"get",
-        url:"/api/corona/gen/today",
+        url:"/api/corona/gen/2021-07-01",
         success:function(r){
             console.log(r);
             let confArr = new Array();
@@ -70,7 +70,7 @@ $(function(){
                     labels:["확진", "음성"],
                     datasets:[{
                         label:"확진/음성",
-                        data:[r.data.decideCnt, r.data.examCnt-r.data.decideCnt],
+                        data:[r.data.decideCnt, r.data.examCnt - r.data.decideCnt],
                         backgroundColor:['rgb(220,20,60)', 'rgb(154,205,50)']
                     }]
                 }
@@ -80,7 +80,7 @@ $(function(){
 
     $.ajax({
         type:"get",
-        url:"/api/sidoInfo/today",
+        url:"/api/sidoInfo/2021-07-01",
         success:function(r){
             console.log(r);
             let sidoName = new Array();
@@ -165,7 +165,7 @@ $(function(){
 
     $.ajax({
         type:"get",
-        url:"/api/corona/vaccine/today",
+        url:"/api/corona/vaccine/2021-07-01",
         success:function(r){
             console.log(r);
 

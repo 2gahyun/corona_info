@@ -9,7 +9,7 @@
         (#{accExamCnt}, #{accExamCompCnt}, #{careCnt}, #{clearCnt}, #{deathCnt}, #{decideCnt}, #{examCnt}, #{resultNegCnt}, #{stateTime});
     </insert>
     <select id="selectCoronaInfoByDate" resultType="com.greenart.vo.CoronaInfoVO">
-        select * from corona_info where stateTime >= str_to_date(#{date}, "%Y-%m-%d")
+        select * from corona_info where stateTime >= str_to_date('2021-07-01', "%Y-%m-%d")
     </select>
 
     <insert id="insertCoronaSidoInfo">
